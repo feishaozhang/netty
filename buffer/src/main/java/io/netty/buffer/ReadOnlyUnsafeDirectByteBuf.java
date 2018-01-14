@@ -29,7 +29,9 @@ final class ReadOnlyUnsafeDirectByteBuf extends ReadOnlyByteBufferBuf {
 
     ReadOnlyUnsafeDirectByteBuf(ByteBufAllocator allocator, ByteBuffer buffer) {
         super(allocator, buffer);
-        memoryAddress = PlatformDependent.directBufferAddress(buffer);
+        // Use this.buffer as the super class wills slice the passed in ByteBuffer which means the memoryAddress
+        // may be different if the position != 0.
+        memoryAddress = PlatformDependent.directBufferAddress(this.buffer);
     }
 
     @Override
